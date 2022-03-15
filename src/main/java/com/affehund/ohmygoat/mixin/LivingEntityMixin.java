@@ -1,7 +1,7 @@
 package com.affehund.ohmygoat.mixin;
 
 import com.affehund.ohmygoat.core.GoatRegistry;
-import com.affehund.ohmygoat.core.config.GoatConfig;
+import com.affehund.ohmygoat.core.util.GoatConfig;
 import com.affehund.ohmygoat.core.util.GoatTags;
 import com.affehund.ohmygoat.core.util.GoatUtilities;
 import net.minecraft.nbt.CompoundTag;

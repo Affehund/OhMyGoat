@@ -1,4 +1,4 @@
-package com.affehund.ohmygoat.core.config;
+package com.affehund.ohmygoat.core.util;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
@@ -12,6 +12,7 @@ public class GoatConfig {
         COMMON_SPEC = configBuilder.build();
     }
 
+    public static ForgeConfigSpec.BooleanValue ADD_OUTPOST_LOOT;
     public static ForgeConfigSpec.BooleanValue SHOW_TOOLTIPS;
     public static ForgeConfigSpec.IntValue CHEESE_MAKING_DURATION;
     public static ForgeConfigSpec.IntValue MIN_GOAT_CHEESE;
@@ -25,6 +26,7 @@ public class GoatConfig {
         builder.comment("Oh My Goat Common Config");
 
         builder.push("General");
+        ADD_OUTPOST_LOOT = builder.comment("Whether to add the goat horn to the pillager outpost chest loot.").define("add_outpost_loot", true);
         SHOW_TOOLTIPS = builder.comment("Whether to show tooltips for various items.").define("show_tooltips", true);
         builder.pop();
 

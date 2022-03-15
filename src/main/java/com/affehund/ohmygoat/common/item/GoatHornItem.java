@@ -1,6 +1,6 @@
 package com.affehund.ohmygoat.common.item;
 
-import com.affehund.ohmygoat.core.config.GoatConfig;
+import com.affehund.ohmygoat.core.util.GoatConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;

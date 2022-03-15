@@ -3,16 +3,21 @@ package com.affehund.ohmygoat;
 import com.affehund.ohmygoat.core.GoatDataGenerator;
 import com.affehund.ohmygoat.core.GoatRegistry;
 import com.affehund.ohmygoat.core.compat.top.CheeseMakingProbeInfoProvider;
-import com.affehund.ohmygoat.core.config.GoatConfig;
+import com.affehund.ohmygoat.core.util.GoatConfig;
 import com.affehund.ohmygoat.core.util.GoatTags;
 import com.affehund.ohmygoat.core.util.GoatUtilities;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -83,6 +88,19 @@ public class OhMyGoat {
             generator.addProvider(new GoatDataGenerator.ItemTagsGenerator(generator, blockTagsProvider, MOD_ID, existingFileHelper));
             generator.addProvider(new GoatDataGenerator.LootTableGenerator(generator));
             generator.addProvider(new GoatDataGenerator.RecipeGenerator(generator));
+        }
+    }
+
+    @SubscribeEvent
+    public void loadLootTables(LootTableLoadEvent event) {
+        if (GoatConfig.ADD_OUTPOST_LOOT.get()) {
+            var name = event.getName();
+            if (name.equals(BuiltInLootTables.PILLAGER_OUTPOST)) {
+                LOGGER.debug("Injecting loot table {} from {}", name, OhMyGoat.MOD_ID);
+                event.getTable().addPool(LootPool.lootPool()
+                        .add(LootTableReference.lootTableReference(new ResourceLocation(MOD_ID, "inject/chests/pillager_outpost")))
+                        .name(MOD_ID + "_injection").build());
+            }
         }
     }
 

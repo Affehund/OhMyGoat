@@ -1,7 +1,7 @@
 package com.affehund.ohmygoat.common.block.entity;
 
 import com.affehund.ohmygoat.core.GoatRegistry;
-import com.affehund.ohmygoat.core.config.GoatConfig;
+import com.affehund.ohmygoat.core.util.GoatConfig;
 import com.affehund.ohmygoat.core.util.GoatUtilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

@@ -11,6 +11,7 @@ import net.minecraft.advancements.critereon.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.data.loot.ChestLoot;
 import net.minecraft.data.loot.EntityLoot;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -39,6 +40,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceWithLootingCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -346,6 +348,7 @@ public class GoatDataGenerator {
         protected @NotNull List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
             return ImmutableList.of(
                     Pair.of(Blocks::new, LootContextParamSets.BLOCK),
+                    Pair.of(Chests::new, LootContextParamSets.CHEST),
                     Pair.of(Entities::new, LootContextParamSets.ENTITY)
             );
         }
@@ -367,6 +370,22 @@ public class GoatDataGenerator {
             }
         }
 
+        public static class Chests extends ChestLoot {
+
+            @Override
+            public void accept(@NotNull BiConsumer<ResourceLocation, LootTable.Builder> builder) {
+                var list = ImmutableList.of(BuiltInLootTables.PILLAGER_OUTPOST);
+                var lootPool = LootPool.lootPool().when(LootItemRandomChanceCondition.randomChance(0.05F))
+                        .setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(GoatRegistry.GOAT_HORN.get()).setWeight(1));
+
+                createInjectPools(builder, list, LootTable.lootTable().withPool(lootPool));
+            }
+
+            private void createInjectPools(BiConsumer<ResourceLocation, LootTable.Builder> consumer, List<ResourceLocation> list, LootTable.Builder builder) {
+                list.forEach(resourceLocation -> consumer.accept(new ResourceLocation(OhMyGoat.MOD_ID, "inject/" + resourceLocation.getPath()), builder));
+            }
+        }
+
         public static class Entities extends EntityLoot {
             @Override
             protected void addTables() {
@@ -379,7 +398,7 @@ public class GoatDataGenerator {
                         .apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
                         .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0.0F, 1.0F))));
                 LootPool.Builder goatHornPool = LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F)).add(LootItem.lootTableItem(GoatRegistry.GOAT_HORN.get())).when(LootItemKilledByPlayerCondition.killedByPlayer()).when(LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.025F, 0.01F));
-                return LootTable.lootTable().withPool(chevonPool)/*.withPool(furPool)*/.withPool(goatHornPool);
+                return LootTable.lootTable().withPool(chevonPool).withPool(goatHornPool);
             }
 
             @Override
