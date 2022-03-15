@@ -18,7 +18,7 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 
 group = 'com.affehund'
-version = '1.18.1-1.0.0'
+version = '1.18.2-1.1.0'
 
 java {
     archivesBaseName = 'ohmygoat-forge'
@@ -26,8 +26,8 @@ java {
 }
 
 minecraft {
-    // mappings channel: 'official', version: '1.18.1'
-    mappings channel: 'parchment', version: '2022.02.13-1.18.1'
+//    mappings channel: 'official', version: '1.18.1'
+    mappings channel: 'parchment', version: '1.18.1-2022.03.06-1.18.2'
 
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -106,16 +106,16 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.1-39.1.1'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.0.16'
 
     // mixins
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // jei
-    compileOnly fg.deobf("mezz.jei:jei-1.18.1:9.2.1.69:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.1:9.2.1.69")
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.2.133:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.5.2.133")
 
-    implementation fg.deobf("curse.maven:toptemp-245211:3665852")
+    implementation fg.deobf("curse.maven:toptemp-245211:3671753")
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

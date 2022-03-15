@@ -203,9 +203,15 @@ public class GoatDataGenerator {
             addAdvancement("rammed_by_goat", "I Goat It", "Get rammed by a goat");
             addAdvancement("use_goat_horn", "Oh my Goat!", "Use a goat horn to scare everyone");
             addAdvancement("cheese_maker", "Cheese Maker", "Make goat cheese by placing goat milk into a cauldron");
-            addAdvancement("horned_helmet", "Horny Helmet", "Craft a horned helmet by combining any helmet with a goat horn in the smithing table.");
+            addAdvancement("horned_helmet", "Horned Helmet", "Craft a horned helmet by combining any helmet with a goat horn in the smithing table.");
 
             addGoatScreamPotion();
+
+            addTooltip("goat_horn", "Hold %s to scare others.");
+            addTooltip("horned_helmet_1", "Can hurt others with a probability of %s percent.");
+            addTooltip("horned_helmet_2", "But you can lose those horns, too.");
+            addTooltip("horned_helmet_3", "Therefore you should use it wisely!");
+            addTooltip("hold_shift", "Hold %s for more information.");
         }
 
         private void addAdvancement(String key, String title, String description) {
@@ -219,6 +225,10 @@ public class GoatDataGenerator {
             add("item.minecraft.splash_potion.effect." + key, "Splash Potion of the " + "Goat Scream");
             add("item.minecraft.lingering_potion.effect." + key, "Lingering Potion of the " + "Goat Scream");
             add("item.minecraft.tipped_arrow.effect." + key, "Arrow of the " + "Goat Scream");
+        }
+
+        private void addTooltip(String key, String translation) {
+            add("tooltip.ohmygoat." + key, translation);
         }
     }
 

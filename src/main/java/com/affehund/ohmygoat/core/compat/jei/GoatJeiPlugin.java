@@ -25,13 +25,13 @@ public class GoatJeiPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(Items.CAULDRON), CheeseMakingCategory.ID);
+        registration.addRecipeCatalyst(new ItemStack(Items.CAULDRON), CheeseMakingCategory.TYPE);
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
         var goatCheeseRecipe = new CheeseMakingWrapper(new ItemStack(GoatRegistry.GOAT_MILK_BUCKET.get()), new ItemStack(GoatRegistry.GOAT_CHEESE.get()), 600);
-        registration.addRecipes(Collections.singletonList(goatCheeseRecipe), CheeseMakingCategory.ID);
+        registration.addRecipes(CheeseMakingCategory.TYPE, Collections.singletonList(goatCheeseRecipe));
     }
 
     @Override

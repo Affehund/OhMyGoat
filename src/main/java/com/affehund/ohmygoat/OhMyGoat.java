@@ -3,10 +3,22 @@ package com.affehund.ohmygoat;
 import com.affehund.ohmygoat.core.GoatDataGenerator;
 import com.affehund.ohmygoat.core.GoatRegistry;
 import com.affehund.ohmygoat.core.compat.top.CheeseMakingProbeInfoProvider;
+import com.affehund.ohmygoat.core.config.GoatConfig;
+import com.affehund.ohmygoat.core.util.GoatTags;
 import com.affehund.ohmygoat.core.util.GoatUtilities;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -32,6 +44,8 @@ public class OhMyGoat {
         GoatRegistry.BLOCK_ENTITIES.register(modEventBus);
         GoatRegistry.ITEMS.register(modEventBus);
         GoatRegistry.POTIONS.register(modEventBus);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, GoatConfig.COMMON_SPEC);
 
         forgeEventBus.register(this);
         LOGGER.debug("{} has finished loading for now!", MOD_ID);
@@ -69,6 +83,28 @@ public class OhMyGoat {
             generator.addProvider(new GoatDataGenerator.ItemTagsGenerator(generator, blockTagsProvider, MOD_ID, existingFileHelper));
             generator.addProvider(new GoatDataGenerator.LootTableGenerator(generator));
             generator.addProvider(new GoatDataGenerator.RecipeGenerator(generator));
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @SubscribeEvent
+    public void tooltip(ItemTooltipEvent event) {
+
+        var stack = event.getItemStack();
+        var tooltips = event.getToolTip();
+
+        if (stack.is(GoatTags.Items.HORNED_HELMETS) && GoatConfig.SHOW_TOOLTIPS.get()) {
+
+            var roundedProbability = Math.round(GoatConfig.HURT_ATTACKER_PROBABILITY.get() * 100 * 10.0) / 10.0;
+            tooltips.add(new TranslatableComponent("tooltip.ohmygoat.horned_helmet_1", roundedProbability));
+
+            var shiftKey = Minecraft.getInstance().options.keyShift;
+            if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), shiftKey.getKey().getValue())) {
+                tooltips.add(new TranslatableComponent("tooltip.ohmygoat.horned_helmet_2"));
+                tooltips.add(new TranslatableComponent("tooltip.ohmygoat.horned_helmet_3"));
+            } else {
+                tooltips.add(new TranslatableComponent("tooltip.ohmygoat.hold_shift", ChatFormatting.YELLOW + shiftKey.getTranslatedKeyMessage().getString()));
+            }
         }
     }
 }

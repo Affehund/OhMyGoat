@@ -26,5 +26,10 @@
   "ohmygoat.advancements.ohmygoat.spyglass_at_goat.description": "Betrachte eine Ziege durch ein Fernrohr",
   "ohmygoat.advancements.ohmygoat.spyglass_at_goat.title": "Ist es ein weiches Bett?",
   "ohmygoat.advancements.ohmygoat.use_goat_horn.description": "Benutze ein Ziegenhorn, um alle zu erschrecken",
-  "ohmygoat.advancements.ohmygoat.use_goat_horn.title": "Oh, meine Ziege!"
+  "ohmygoat.advancements.ohmygoat.use_goat_horn.title": "Oh, meine Ziege!",
+  "tooltip.ohmygoat.goat_horn": "Drücke %s um andere zu erschrecken.",
+  "tooltip.ohmygoat.hold_shift": "Halte %s gedrückt für mehr Informationen.",
+  "tooltip.ohmygoat.horned_helmet_1": "Kann andere mit einer Wahrscheinlichkeit von %s Prozent verletzen.",
+  "tooltip.ohmygoat.horned_helmet_2": "Aber man kann die Hörner auch verlieren.",
+  "tooltip.ohmygoat.horned_helmet_3": "Deshalb solltest du es mit Bedacht einsetzen."
 }

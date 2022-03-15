@@ -1,5 +1,10 @@
 package com.affehund.ohmygoat.common.item;
 
+import com.affehund.ohmygoat.core.config.GoatConfig;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
@@ -11,9 +16,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class GoatHornItem extends Item {
     public GoatHornItem(Item.Properties properties) {
@@ -62,5 +71,11 @@ public class GoatHornItem extends Item {
             f = 1.0F;
         }
         return f;
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltips, @NotNull TooltipFlag isAdvanced) {
+        if (GoatConfig.SHOW_TOOLTIPS.get())
+            tooltips.add(new TranslatableComponent("tooltip.ohmygoat.goat_horn", ChatFormatting.YELLOW + Minecraft.getInstance().options.keyUse.getTranslatedKeyMessage().getString()));
     }
 }

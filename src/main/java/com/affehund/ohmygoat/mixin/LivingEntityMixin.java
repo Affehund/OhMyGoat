@@ -1,6 +1,7 @@
 package com.affehund.ohmygoat.mixin;
 
 import com.affehund.ohmygoat.core.GoatRegistry;
+import com.affehund.ohmygoat.core.config.GoatConfig;
 import com.affehund.ohmygoat.core.util.GoatTags;
 import com.affehund.ohmygoat.core.util.GoatUtilities;
 import net.minecraft.nbt.CompoundTag;
@@ -31,16 +32,16 @@ public class LivingEntityMixin {
 
                 if (stack.is(GoatTags.Items.HORNED_HELMETS) && !GoatUtilities.hasEnchantment(stack, Enchantments.THORNS)) {
 
-                    // chance to hurt attacker
-                    if (random.nextFloat() < 0.15F) {
+                    // probability to hurt attacker
+                    if (random.nextDouble() < GoatConfig.HURT_ATTACKER_PROBABILITY.get()) {
 
                         attacker.hurt(DamageSource.thorns(livingEntity), amount > 10 ? amount - 10 : 1 + random.nextInt(4));
 
                         var equipmentSlot = LivingEntity.getEquipmentSlotForItem(stack);
                         stack.hurtAndBreak(2, livingEntity, (consumer) -> consumer.broadcastBreakEvent(equipmentSlot));
 
-                        // chance to lose horns
-                        if (random.nextFloat() < 0.01) {
+                        // probability to lose horns
+                        if (random.nextDouble() < GoatConfig.HORN_LOSING_PROBABILITY.get()) {
 
                             var goatHorn = new ItemStack(GoatRegistry.GOAT_HORN.get());
                             var smithingRecipes = level.getRecipeManager().getAllRecipesFor(RecipeType.SMITHING);
@@ -55,8 +56,8 @@ public class LivingEntityMixin {
 
                                     livingEntity.getSlot(100 + equipmentSlot.getIndex()).set(hornlessHelmet);
 
-                                    // chance to drop horn
-                                    if (random.nextFloat() < 0.85) {
+                                    // probability to drop horn
+                                    if (random.nextDouble() < GoatConfig.DROP_HORN_PROBABILITY.get()) {
                                         var pos = livingEntity.blockPosition();
                                         int damage = (int) (54.0 * stack.getDamageValue() / stack.getMaxDamage()) + GoatUtilities.randomInRange(level.getRandom(), 1, 5);
 

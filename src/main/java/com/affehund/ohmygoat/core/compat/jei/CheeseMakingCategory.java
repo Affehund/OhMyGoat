@@ -6,12 +6,16 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -23,7 +27,8 @@ import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 
 public class CheeseMakingCategory implements IRecipeCategory<CheeseMakingWrapper> {
-    public static final ResourceLocation ID = new ResourceLocation(OhMyGoat.MOD_ID, "cheese_making");
+
+    public static final RecipeType<CheeseMakingWrapper> TYPE = RecipeType.create(OhMyGoat.MOD_ID, "cheese_making", CheeseMakingWrapper.class);
     public static final ResourceLocation TEXTURE = new ResourceLocation(OhMyGoat.MOD_ID, "textures/gui/cheese_making.png");
 
     private final IDrawable icon;
@@ -42,14 +47,21 @@ public class CheeseMakingCategory implements IRecipeCategory<CheeseMakingWrapper
         });
     }
 
+    @SuppressWarnings("removal")
+    @Override
+    public @NotNull Class<? extends CheeseMakingWrapper> getRecipeClass() {
+        return TYPE.getRecipeClass();
+    }
+
+    @SuppressWarnings("removal")
     @Override
     public @NotNull ResourceLocation getUid() {
-        return ID;
+        return TYPE.getUid();
     }
 
     @Override
-    public @NotNull Class<? extends CheeseMakingWrapper> getRecipeClass() {
-        return CheeseMakingWrapper.class;
+    public @NotNull RecipeType<CheeseMakingWrapper> getRecipeType() {
+        return TYPE;
     }
 
     @Override
@@ -67,30 +79,22 @@ public class CheeseMakingCategory implements IRecipeCategory<CheeseMakingWrapper
         return this.icon;
     }
 
-    @Override
-    public void setIngredients(CheeseMakingWrapper recipe, IIngredients ingredients) {
-        ingredients.setInput(VanillaTypes.ITEM, recipe.getInput());
-        ingredients.setOutput(VanillaTypes.ITEM, recipe.getResult());
-    }
 
     @Override
-    public void draw(@NotNull CheeseMakingWrapper recipe, @NotNull PoseStack poseStack, double x, double y) {
+    public void draw(@NotNull CheeseMakingWrapper recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull PoseStack poseStack, double mouseX, double mouseY) {
         this.getArrow(recipe).draw(poseStack, 24, 5);
         this.drawCookTime(recipe, poseStack);
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, @NotNull CheeseMakingWrapper recipe, @NotNull IIngredients ingredients) {
-        var stacks = recipeLayout.getItemStacks();
-
-        stacks.init(0, true, 0, 4);
-        stacks.init(1, false, 60, 4);
-
-        stacks.set(ingredients);
+    public void setRecipe(IRecipeLayoutBuilder builder, CheeseMakingWrapper recipe, @NotNull IFocusGroup focuses) {
+        IRecipeSlotBuilder input = builder.addSlot(RecipeIngredientRole.INPUT, 1, 5).addItemStack(recipe.input());
+        IRecipeSlotBuilder result = builder.addSlot(RecipeIngredientRole.OUTPUT, 61, 5).addItemStack(recipe.result());
+        builder.createFocusLink(input, result);
     }
 
     private IDrawableAnimated getArrow(CheeseMakingWrapper recipe) {
-        int cookingTime = recipe.getCookingTime();
+        int cookingTime = recipe.cookingTime();
         if (cookingTime <= 0) {
             cookingTime = 600;
         }
@@ -98,7 +102,7 @@ public class CheeseMakingCategory implements IRecipeCategory<CheeseMakingWrapper
     }
 
     private void drawCookTime(CheeseMakingWrapper recipe, PoseStack poseStack) {
-        int cookTime = recipe.getCookingTime();
+        int cookTime = recipe.cookingTime();
         if (cookTime > 0) {
             int cookTimeSeconds = cookTime / 20;
             TranslatableComponent timeString = new TranslatableComponent("gui.jei.category.smelting.time.seconds", cookTimeSeconds);
