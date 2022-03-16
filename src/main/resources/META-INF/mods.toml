@@ -1,5 +1,5 @@
 modLoader = "javafml" #mandatory
-loaderVersion = "[39,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion = "[40,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 license = "GNU GPL 3.0"
 issueTrackerURL = "https://www.github.com/Affehund/OhMyGoat" #optional
 [[mods]] #mandatory
