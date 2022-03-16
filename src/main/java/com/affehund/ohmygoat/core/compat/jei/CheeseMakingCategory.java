@@ -1,6 +1,7 @@
 package com.affehund.ohmygoat.core.compat.jei;
 
 import com.affehund.ohmygoat.OhMyGoat;
+import com.affehund.ohmygoat.core.util.GoatConfig;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -96,7 +97,7 @@ public class CheeseMakingCategory implements IRecipeCategory<CheeseMakingWrapper
     private IDrawableAnimated getArrow(CheeseMakingWrapper recipe) {
         int cookingTime = recipe.cookingTime();
         if (cookingTime <= 0) {
-            cookingTime = 600;
+            cookingTime = GoatConfig.CHEESE_MAKING_DURATION.get();
         }
         return this.cachedArrows.getUnchecked(cookingTime);
     }

@@ -57,7 +57,7 @@ public class LivingEntityMixin {
                                     livingEntity.getSlot(100 + equipmentSlot.getIndex()).set(hornlessHelmet);
 
                                     // probability to drop horn
-                                    if (random.nextDouble() < GoatConfig.DROP_HORN_PROBABILITY.get()) {
+                                    if (random.nextDouble() < GoatConfig.HORN_DROPPING_PROBABILITY.get()) {
                                         var pos = livingEntity.blockPosition();
                                         int damage = (int) (54.0 * stack.getDamageValue() / stack.getMaxDamage()) + GoatUtilities.randomInRange(level.getRandom(), 1, 5);
 

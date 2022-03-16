@@ -59,8 +59,9 @@ public class GoatHornItem extends Item {
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.RAID_HORN, SoundSource.PLAYERS, 60.0F, 1.0F);
             player.getCooldowns().addCooldown(this, 200);
             player.awardStat(Stats.ITEM_USED.get(this));
-            if (!player.getAbilities().instabuild)
+            if (!player.getAbilities().instabuild) {
                 stack.hurtAndBreak(1, player, e -> e.broadcastBreakEvent(player.getUsedItemHand()));
+            }
         }
     }
 

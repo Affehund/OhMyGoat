@@ -96,7 +96,7 @@ public class OhMyGoat {
         if (GoatConfig.ADD_OUTPOST_LOOT.get()) {
             var name = event.getName();
             if (name.equals(BuiltInLootTables.PILLAGER_OUTPOST)) {
-                LOGGER.debug("Injecting loot table {} from {}", name, OhMyGoat.MOD_ID);
+                LOGGER.debug("Injecting loot table {} from {}", name, MOD_ID);
                 event.getTable().addPool(LootPool.lootPool()
                         .add(LootTableReference.lootTableReference(new ResourceLocation(MOD_ID, "inject/chests/pillager_outpost")))
                         .name(MOD_ID + "_injection").build());

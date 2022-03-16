@@ -27,7 +27,7 @@
   "ohmygoat.advancements.ohmygoat.spyglass_at_goat.title": "Is It a fluffy Bed?",
   "ohmygoat.advancements.ohmygoat.use_goat_horn.description": "Use a goat horn to scare everyone",
   "ohmygoat.advancements.ohmygoat.use_goat_horn.title": "Oh my Goat!",
-  "tooltip.ohmygoat.goat_horn": "Hold %s to scare others.",
+  "tooltip.ohmygoat.goat_horn": "Press %s to scare others.",
   "tooltip.ohmygoat.hold_shift": "Hold %s for more information.",
   "tooltip.ohmygoat.horned_helmet_1": "Can hurt others with a probability of %s percent.",
   "tooltip.ohmygoat.horned_helmet_2": "But you can lose those horns, too.",
