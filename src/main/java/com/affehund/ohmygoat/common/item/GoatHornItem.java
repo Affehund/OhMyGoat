@@ -1,5 +1,8 @@
 package com.affehund.ohmygoat.common.item;
 
+import com.affehund.ohmygoat.OhMyGoat;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -9,10 +12,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class GoatHornItem extends Item {
     public GoatHornItem(Settings settings) {
@@ -21,16 +30,17 @@ public class GoatHornItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if(!world.isClient) user.setCurrentHand(hand);
+        if (!world.isClient) user.setCurrentHand(hand);
         return TypedActionResult.consume(user.getStackInHand(hand));
     }
 
     @Override
     public void onStoppedUsing(ItemStack stack, World world, LivingEntity usingLivingEntity, int remainingUseTicks) {
-        if(world.isClient || GoatHornItem.getPullProgress(this.getMaxUseTime(stack) - remainingUseTicks) < 1.0F) return;
+        if (world.isClient || GoatHornItem.getPullProgress(this.getMaxUseTime(stack) - remainingUseTicks) < 1.0F)
+            return;
         if (usingLivingEntity instanceof PlayerEntity player) {
-            for(LivingEntity entity : world.getNonSpectatingEntities(LivingEntity.class, player.getBoundingBox().expand(10.0D))) {
-                if(entity != usingLivingEntity) {
+            for (LivingEntity entity : world.getNonSpectatingEntities(LivingEntity.class, player.getBoundingBox().expand(10.0D))) {
+                if (entity != usingLivingEntity) {
                     entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 200, 1));
                     entity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 200));
                 }
@@ -39,7 +49,8 @@ public class GoatHornItem extends Item {
             world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EVENT_RAID_HORN, SoundCategory.PLAYERS, 60.0F, 1.0F);
             player.getItemCooldownManager().set(this, 200);
             player.incrementStat(Stats.USED.getOrCreateStat(this));
-            if (!player.getAbilities().creativeMode) stack.damage(1, player, e -> e.sendToolBreakStatus(player.getActiveHand()));
+            if (!player.getAbilities().creativeMode)
+                stack.damage(1, player, e -> e.sendToolBreakStatus(player.getActiveHand()));
         }
     }
 
@@ -52,11 +63,18 @@ public class GoatHornItem extends Item {
     }
 
     public static float getPullProgress(int useTicks) {
-        float f = (float)useTicks / 20.0F;
+        float f = (float) useTicks / 20.0F;
         f = (f * f + f * 2.0F) / 3.0F;
         if (f > 1.0F) {
             f = 1.0F;
         }
         return f;
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltips, TooltipContext context) {
+        if (OhMyGoat.CONFIG.SHOW_TOOLTIPS) {
+            tooltips.add(new TranslatableText("tooltip.ohmygoat.goat_horn", Formatting.YELLOW + MinecraftClient.getInstance().options.useKey.getBoundKeyLocalizedText().getString()));
+        }
     }
 }

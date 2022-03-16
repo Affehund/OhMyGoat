@@ -1,5 +1,6 @@
 package com.affehund.ohmygoat.core.compat.rei.client;
 
+import com.affehund.ohmygoat.OhMyGoat;
 import com.affehund.ohmygoat.core.GoatRegistry;
 import com.affehund.ohmygoat.core.compat.rei.CheeseMakingDisplay;
 import com.affehund.ohmygoat.core.compat.rei.GoatREIPlugin;
@@ -34,7 +35,7 @@ public class GoatClientREIPlugin implements REIClientPlugin {
                 if (entry.getType() == VanillaEntryTypes.ITEM) {
                     var item = ((ItemStack) entry.getValue()).getItem();
                     if (item.equals(GoatRegistry.GOAT_CHEESE)) {
-                        var list = Collections.singleton(new CheeseMakingDisplay(new ItemStack(GoatRegistry.GOAT_MILK_BUCKET), new ItemStack(GoatRegistry.GOAT_CHEESE), 600));
+                        var list = Collections.singleton(new CheeseMakingDisplay(new ItemStack(GoatRegistry.GOAT_MILK_BUCKET), new ItemStack(GoatRegistry.GOAT_CHEESE), OhMyGoat.CONFIG.CHEESE_MAKING_DURATION));
                         return Optional.of(list.stream().toList());
                     }
                 }
@@ -46,7 +47,7 @@ public class GoatClientREIPlugin implements REIClientPlugin {
                 if (entry.getType() == VanillaEntryTypes.ITEM) {
                     var item = ((ItemStack) entry.getValue()).getItem();
                     if (item.equals(GoatRegistry.GOAT_MILK_BUCKET) || item.equals(Items.CAULDRON)) {
-                        var list = Collections.singleton(new CheeseMakingDisplay(new ItemStack(GoatRegistry.GOAT_MILK_BUCKET), new ItemStack(GoatRegistry.GOAT_CHEESE), 600));
+                        var list = Collections.singleton(new CheeseMakingDisplay(new ItemStack(GoatRegistry.GOAT_MILK_BUCKET), new ItemStack(GoatRegistry.GOAT_CHEESE), OhMyGoat.CONFIG.CHEESE_MAKING_DURATION));
                         return Optional.of(list.stream().toList());
                     }
                 }

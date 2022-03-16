@@ -1,5 +1,6 @@
 package com.affehund.ohmygoat.common.block.entity;
 
+import com.affehund.ohmygoat.OhMyGoat;
 import com.affehund.ohmygoat.core.GoatRegistry;
 import com.affehund.ohmygoat.core.GoatUtilities;
 import net.minecraft.block.Block;
@@ -15,7 +16,7 @@ import net.minecraft.world.World;
 
 public class GoatMilkCauldronBlockEntity extends BlockEntity {
     private int cookingProgress = 0;
-    private int cookingTotalTime = 600;
+    private int cookingTotalTime = OhMyGoat.CONFIG.CHEESE_MAKING_DURATION;
 
     public GoatMilkCauldronBlockEntity(BlockPos pos, BlockState state) {
         super(GoatRegistry.GOAT_MILK_CAULDRON_BLOCK_ENTITY, pos, state);
@@ -28,7 +29,9 @@ public class GoatMilkCauldronBlockEntity extends BlockEntity {
             flag = true;
             blockEntity.cookingProgress++;
             if (blockEntity.cookingProgress >= blockEntity.cookingTotalTime) {
-                ItemStack itemstack = new ItemStack(GoatRegistry.GOAT_CHEESE, GoatUtilities.randomInRange(world.getRandom(), 1, 3));
+                var min = OhMyGoat.CONFIG.MIN_GOAT_CHEESE;
+                var max = OhMyGoat.CONFIG.MAX_GOAT_CHEESE;
+                ItemStack itemstack = new ItemStack(GoatRegistry.GOAT_CHEESE, GoatUtilities.randomInRange(world.getRandom(), min, max));
                 ItemScatterer.spawn(world, pos.getX(), pos.getY(), pos.getZ(), itemstack);
                 LeveledCauldronBlock.decrementFluidLevel(state, world, pos);
                 world.updateListeners(pos, state, state, Block.NOTIFY_ALL);

@@ -1,5 +1,6 @@
 package com.affehund.ohmygoat.mixin;
 
+import com.affehund.ohmygoat.OhMyGoat;
 import com.affehund.ohmygoat.core.GoatRegistry;
 import com.affehund.ohmygoat.core.GoatTags;
 import com.affehund.ohmygoat.core.GoatUtilities;
@@ -31,16 +32,16 @@ public class LivingEntityMixin {
 
                 if (stack.isIn(GoatTags.Items.HORNED_HELMETS) && !GoatUtilities.hasEnchantment(stack, Enchantments.THORNS)) {
 
-                    // chance to hurt attacker
-                    if (random.nextFloat() < 0.15F) {
+                    // probability to hurt attacker
+                    if (random.nextDouble() < OhMyGoat.CONFIG.HURT_ATTACKER_PROBABILITY) {
 
                         attacker.damage(DamageSource.thorns(livingEntity), amount > 10 ? amount - 10 : 1 + random.nextInt(4));
 
                         var equipmentSlot = LivingEntity.getPreferredEquipmentSlot(stack);
                         stack.damage(2, livingEntity, (consumer) -> consumer.sendEquipmentBreakStatus(equipmentSlot));
 
-                        // chance to lose horns
-                        if (random.nextFloat() < 0.01) {
+                        // probability to lose horns
+                        if (random.nextDouble() < OhMyGoat.CONFIG.HORN_LOSING_PROBABILITY) {
 
                             var goatHorn = new ItemStack(GoatRegistry.GOAT_HORN);
                             var smithingRecipes = world.getRecipeManager().listAllOfType(RecipeType.SMITHING);
@@ -55,8 +56,8 @@ public class LivingEntityMixin {
 
                                     livingEntity.getStackReference(100 + equipmentSlot.getEntitySlotId()).set(hornlessHelmet);
 
-                                    // chance to drop horn
-                                    if (random.nextFloat() < 0.85) {
+                                    // probability to drop horn
+                                    if (random.nextDouble() < OhMyGoat.CONFIG.HORN_DROPPING_PROBABILITY) {
                                         var pos = livingEntity.getBlockPos();
                                         int damage = (int) (54.0 * stack.getDamage() / stack.getMaxDamage()) + GoatUtilities.randomInRange(world.getRandom(), 1, 5);
 

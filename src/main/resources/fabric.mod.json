@@ -8,8 +8,9 @@
     "Affehund"
   ],
   "contact": {
-    "website": "https://www.curseforge.com/minecraft/mc-mods/goat",
-    "repo": "https://github.com/Affehund/OhMyGoat"
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/goat",
+    "issues": "https://github.com/affehund/OhMyGoat/issues",
+    "sources": "https://github.com/Affehund/OhMyGoat"
   },
   "license": "GPL-3.0",
   "icon": "ohmygoat.png",
@@ -25,6 +26,9 @@
     "rei": [
       "com.affehund.ohmygoat.core.compat.rei.GoatREIPlugin",
       "com.affehund.ohmygoat.core.compat.rei.client.GoatClientREIPlugin"
+    ],
+    "modmenu": [
+      "com.affehund.ohmygoat.core.config.GoatMenu"
     ]
   },
   "mixins": [
@@ -33,6 +37,7 @@
   "depends": {
     "fabricloader": ">=0.12.12",
     "fabric": "*",
-    "minecraft": "1.18.x"
+    "minecraft": "1.18.x",
+    "cloth-config2": ">=6.2.57"
   }
 }
